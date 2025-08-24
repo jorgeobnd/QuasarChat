@@ -1,6 +1,9 @@
 <template>
   <div class="q-px-xl">
     <h5>{{ access ? 'Login' : 'Register' }} Form</h5>
+    <pre>{{ isAuthenticated }}</pre>
+    <pre>{{ user }}</pre>
+
     <q-form class="q-gutter-md" @submit.prevent="processForm">
       <q-input label="Mail" name="mail" v-model="mail" />
       <q-input label="Password" name="password" v-model="password" />
@@ -16,12 +19,14 @@
 <script>
 import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { useAuth } from '@vueuse/firebase'
 export default {
   setup() {
     const mail = ref('jorge@gmail.com')
     const password = ref('123456')
     const access = ref(true)
     const auth = getAuth()
+    const { isAuthenticated, user } = useAuth()
 
     const processForm = async () => {
       if (!mail.value || !password.value) {
@@ -48,6 +53,8 @@ export default {
       password,
       access,
       processForm,
+      isAuthenticated,
+      user,
     }
   },
 }
