@@ -1,5 +1,5 @@
 <template>
-  <q-page-sticky position="top" expand>
+  <q-page-sticky position="top" expand class="tabs-zindex">
     <q-tabs
       v-model="userSelect"
       inline-label
@@ -8,8 +8,8 @@
       class="bg-primary text-white shadow-2 full-width"
     >
       <q-tab
-        v-for="user in users"
-        :key="user.id"
+        v-for="user in computedUserName"
+        :key="user.uid"
         :name="user.uid"
         icon="account_circle"
         :label="user.mail"
@@ -20,10 +20,14 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, inject } from 'vue'
 import { db } from 'boot/firebase.js'
 import { collection, onSnapshot } from 'firebase/firestore'
-const userSelect = ref('mails')
+import { getAuth } from 'firebase/auth'
+import { useAuth } from '@vueuse/firebase'
+const auth = getAuth()
+const { user } = useAuth(auth)
+const userSelect = inject('userSelect')
 const users = ref([])
 
 onMounted(() => {
@@ -49,8 +53,17 @@ onMounted(() => {
       }
     })
   })
-
   // clean up listener when component unmounts
   onUnmounted(() => unsubscribe())
 })
+
+const computedUserName = computed(() => {
+  return users.value.filter((item) => item.uid !== user.value.uid)
+})
 </script>
+
+<style scoped>
+.tabs-zindex {
+  z-index: 2000;
+}
+</style>

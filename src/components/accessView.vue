@@ -6,7 +6,7 @@
       <q-input label="Mail" name="mail" v-model="mail" />
       <q-input label="Password" name="password" v-model="password" />
       <q-btn label="" type="submit" color="primary">
-        {{access ? 'Login' : 'Register'}}
+        {{ access ? 'Login' : 'Register' }}
       </q-btn>
       <q-btn color="primary" outline v-if="!access" @click="access = true">
         Have an account?
@@ -21,7 +21,7 @@ import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { useAuth } from '@vueuse/firebase'
 import { db } from 'boot/firebase.js'
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from 'firebase/firestore'
 export default {
   setup() {
     const mail = ref('jorge@gmail.com')
