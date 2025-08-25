@@ -8,7 +8,7 @@
       class="bg-primary text-white shadow-2 full-width"
     >
       <q-tab
-        v-for="user in users"
+        v-for="user in users.filter(u => u.state)"
         :key="user.id"
         :name="user.uid"
         icon="account_circle"
