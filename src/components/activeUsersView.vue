@@ -8,11 +8,12 @@
       class="bg-primary text-white shadow-2 full-width"
     >
       <q-tab
-        v-for="user in users.filter(u => u.state)"
+        v-for="user in users"
         :key="user.id"
         :name="user.uid"
         icon="account_circle"
         :label="user.mail"
+        :class="user.state ? 'text-white' : 'text-grey'"
       />
     </q-tabs>
   </q-page-sticky>
@@ -35,6 +36,7 @@ onMounted(() => {
       if (change.type === 'added') {
         console.log('New user:', change.doc.data())
         users.value = [...users.value, change.doc.data()]
+        users.value = users.value.sort((a, b) => b.state - a.state)
       }
       if (change.type === 'modified') {
         console.log('Modified user:', change.doc.data())
